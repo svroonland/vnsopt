@@ -1,11 +1,11 @@
-from typing import Callable, Optional
+from typing import Callable, Optional, List
 
 from vnsopt.types import Neighbourhood, FitnessScore, FitnessFunction
 
 
 def variable_neighbourhood_search[S](
     start: S,
-    neighbourhoods: list[Neighbourhood[S]],
+    neighbourhoods: List[Neighbourhood[S]],
     local_search: Callable[[S], tuple[S, FitnessScore]],
     objective: FitnessFunction[S],
     iterations_vns: int = 200,
