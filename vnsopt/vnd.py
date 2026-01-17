@@ -15,7 +15,7 @@ def vnd[S](
 
     :param neighbourhoods: List of neighbourhoods to explore sequentially
     :param s: Initial solution
-    :param objective: Fitness function
+    :param objective: Fitness function, returns a score for solution. Iteration is towards a MINIMUM of this score.
     :param epsilon: Minimum improvement in fitness for a solution to be considered better
     :param verbosity: Log verbosity level. 0 or 1 currently.
     :return: Tuple of the improved solution and its fitness score

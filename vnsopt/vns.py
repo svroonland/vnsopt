@@ -6,15 +6,15 @@ from vnsopt.types import Neighbourhood, FitnessScore, FitnessFunction
 def variable_neighbourhood_search[S](
     start: S,
     neighbourhoods: list[Neighbourhood[S]],
-    fn_hill_climb: Callable[[S], tuple[S, FitnessScore]],
-    fn_evaluate: FitnessFunction[S],
+    local_search: Callable[[S], tuple[S, FitnessScore]],
+    objective: FitnessFunction[S],
     iterations_vns: int = 200,
     max_trials_per_neighbourhood: int = 5,
     verbose: bool = False,
     on_iteration_complete: Callable[[S, FitnessScore], None] = lambda sol, fitness: None,
     convergence_threshold: Optional[int] = None,
     max_iterations_without_improvement: Optional[int] = None,
-):
+) -> tuple[S, FitnessScore]:
     """
     An enhancement on top of a hill climbing (local search) algorithm that helps getting out of local optima.
 
@@ -29,18 +29,18 @@ def variable_neighbourhood_search[S](
 
     :param start: Initial solution
     :param neighbourhoods: List of functions that produce a random neighbour solution given a current solution
-    :param fn_hill_climb: Function that iteratively finds a better solution given some starting solution. This function is passed a starting solution and should return the improved solution and fitness score
-    :param fn_evaluate: Fitness function, returns a score for solution. Iteration is towards a MINIMUM of this score.
+    :param local_search: Function that iteratively finds a better solution given some starting solution. This function is passed a starting solution and should return the improved solution and fitness score
+    :param objective: Fitness function, returns a score for solution. Iteration is towards a MINIMUM of this score.
     :param iterations_vns: Maximum number of VNS iterations
     :param max_trials_per_neighbourhood: Maximum number of perturbations using some neighbourhood followed by hill climbing before switching to another neighbourhood when no better solution was found
     :param verbose: Log progress
     :param on_iteration_complete: Callback for intermediate results, taking the current best solution and a fitness score
     :param convergence_threshold: Stop when fitness score is above this threshold
-    :return:
+    :return: Tuple of the improved solution and its fitness score
     """
     k = 0
 
-    best_fitness = fn_evaluate(start)
+    best_fitness = objective(start)
     best = start
 
     print(f"[VNS] Initial fitness: {best_fitness}")
@@ -60,7 +60,7 @@ def variable_neighbourhood_search[S](
             trials = max_trials_per_neighbourhood
             continue
 
-        improved, new_fitness = fn_hill_climb(shaken)
+        improved, new_fitness = local_search(shaken)
         if new_fitness < best_fitness:
             iterations_no_improvement = 0
             (
