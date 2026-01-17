@@ -4,7 +4,6 @@ on:
   push:
     branches: [main]
   pull_request:
-    branches: [main]
 
 jobs:
   lint:
@@ -26,3 +25,6 @@ jobs:
 
       - name: Lint with Ruff
         run: uv run ruff check --output-format=github .
+
+      - name: Build package
+        run: uv build
