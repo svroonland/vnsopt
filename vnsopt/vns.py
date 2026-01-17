@@ -51,7 +51,6 @@ def variable_neighbourhood_search[S](
     iterations_no_improvement = 0
 
     while i <= iterations_vns and k < len(neighbourhoods):
-        # print("[VNS] Best solution so far:", best)
         print("[VNS] Best score:", best_fitness)
 
         shaken, delta = next(neighbourhoods[k](best), (None, None))
@@ -60,9 +59,6 @@ def variable_neighbourhood_search[S](
             k += 1
             trials = max_trials_per_neighbourhood
             continue
-
-        new_fitness = fn_evaluate(shaken)
-        # (print(f"[VNS] Iteration {i} - Fitness after shake:{new_fitness}") if verbose else None)
 
         improved, new_fitness = fn_hill_climb(shaken)
         if new_fitness < best_fitness:
@@ -95,13 +91,17 @@ def variable_neighbourhood_search[S](
                 trials -= 1
         on_iteration_complete(best, best_fitness)
         if convergence_threshold is not None and best_fitness <= convergence_threshold:
-            print("[VNS] Convergence threshold reached")
+            print("[VNS] Convergence threshold reached") if verbose else None
             break
         if max_iterations_without_improvement is not None:
             if iterations_no_improvement >= max_iterations_without_improvement:
-                print(f"[VNS] No improvement in the last {iterations_no_improvement} iterations, stopping.")
+                (
+                    print(f"[VNS] No improvement in the last {iterations_no_improvement} iterations, stopping.")
+                    if verbose
+                    else None
+                )
                 break
         i += 1
 
-    print(f"[VNS] Done. Score: {best_fitness}")
+    print(f"[VNS] Done. Score: {best_fitness}") if verbose else None
     return best, best_fitness

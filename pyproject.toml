@@ -5,3 +5,13 @@ description = "Variable Neighbourhood and Variable Neighbourhood Descent"
 readme = "README.md"
 requires-python = ">=3.14"
 dependencies = []
+
+[dependency-groups]
+dev = [
+    "black>=25.12.0",
+]
+
+[tool.black]
+line-length = 120
+target-version = ['py314']
+include = '(\.pyi?$)|(\.ipynb$)'
