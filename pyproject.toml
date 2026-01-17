@@ -3,7 +3,7 @@ name = "vnsopt"
 version = "0.1.0"
 description = "Variable Neighbourhood and Variable Neighbourhood Descent"
 readme = "README.md"
-requires-python = ">=3.14"
+requires-python = ">=3.12"
 dependencies = []
 
 [dependency-groups]
@@ -13,5 +13,4 @@ dev = [
 
 [tool.black]
 line-length = 120
-target-version = ['py314']
-include = '(\.pyi?$)|(\.ipynb$)'
+target-version = ['py312']
